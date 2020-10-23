@@ -1,4 +1,4 @@
-project('PROJECT_NAME',
+project('embvm-project-skeleton',
 	['c', 'cpp'],
 	default_options : [
 		'warning_level=3',
@@ -11,8 +11,8 @@ project('PROJECT_NAME',
 		'c_std=c11', 'build.c_std=c11',
 		'cpp_std=c++17', 'build.cpp_std=c++17',
 	],
-	meson_version: '>=0.54.0',
-	version: '0.1'
+	meson_version: '>=0.56.0',
+	version: '0.9'
 )
 
 ################################
@@ -41,10 +41,12 @@ endif
 
 if get_option('disable-rtti')
 	desired_cpp_compile_flags += '-fno-rtti'
+	desired_native_cpp_compile_flags += '-fno-rtti'
 endif
 
 if get_option('disable-exceptions')
 	desired_cpp_compile_flags += ['-fno-exceptions', '-fno-unwind-tables']
+	desired_native_cpp_compile_flags += ['-fno-exceptions', '-fno-unwind-tables']
 endif
 
 if get_option('enable-pedantic')
@@ -55,6 +57,12 @@ endif
 
 if get_option('enable-pedantic-error')
 	desired_common_compile_flags += '-pedantic-error'
+endif
+
+if get_option('enable-threading') == false
+    # This will stop the compiler from emiting __cxa_guard_acquire and __cxa_guard_release
+    desired_cpp_compile_flags += ['-fno-threadsafe-statics', '-fno-use-cxa-atexit']
+    desired_native_cpp_compile_flags += ['-fno-threadsafe-statics', '-fno-use-cxa-atexit']
 endif
 
 compile_settings_list = [
@@ -88,11 +96,10 @@ subdir('build/objcopy')
 # Subprojects #
 ###############
 
-libmemory_subproject = subproject('libmemory')
-etl_subproject = subproject('etl')
-
-libmemory_freelist_dep = libmemory_subproject.get_variable('libmemory_freelist_dep')
-etl_dep = etl_subproject.get_variable('etl_dep')
+embvm_core_subproject = subproject('embvm-core')
+framework_include_dep = embvm_core_subproject.get_variable('framework_include_dep')
+framework_host_include_dep = embvm_core_subproject.get_variable('framework_host_include_dep')
+framework_threadless_dep = embvm_core_subproject.get_variable('framework_threadless_dep')
 
 # Configure the project to include `libc` headers by default
 #######################
@@ -105,15 +112,19 @@ clangtidy_files = []
 catch2_tests_dep = []
 
 subdir('src')
-subdir('test')
+#subdir('test')
 
 # Defined after src and test so catch2_dep is fully populated
 # when creating the built-in targets
-subdir('build/test/catch2')
+#subdir('build/test/catch2')
 
 ###################
 # Tooling Modules #
 ###################
+
+clangformat_targets = [
+	meson.source_root() / 'src'
+]
 
 subdir('build/analysis/clang-tidy')
 subdir('build/analysis/complexity')
@@ -131,19 +142,19 @@ subdir('build/docs/doxygen')
 # include paths. Examples:
 #	build_root_include.format('doc'),
 #	app_include.format('APP')
-build_root_include = meson.build_root() + ':@0@'
-app_include = meson.build_root() / 'src/app:@0@'
-lib_include = meson.build_root() / 'src/lib:@0@'
+#build_root_include = meson.build_root() + ':@0@'
+#app_include = meson.build_root() / 'src/app:@0@'
+#lib_include = meson.build_root() / 'src/lib:@0@'
 
-host_pkg_files = [
-	build_root_include.format('docs'),
-	app_include.format('APP')
-]
+#host_pkg_files = [
+#	build_root_include.format('docs'),
+#	app_include.format('APP')
+#]
 
-native_pkg_files = [
-	build_root_include.format('docs'),
-	app_include.format('APP_native')
-]
+#native_pkg_files = [
+#	build_root_include.format('docs'),
+#	app_include.format('APP_native')
+#]
 
 # Invoke the package module
-subdir('build/package')
+#subdir('build/package')
