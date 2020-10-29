@@ -1,6 +1,6 @@
-# Embedded Virtual Machine Nordic Support
+# Embedded Virtual Machine Project Skeleton
 
-This repository provides Embedded VM ecosystem support for Nordic processors.
+This repository provides a project skeleton for new Embedded VM projects.
 
 Note that this project is dual-licensed. The open-source version of this project is released under GPLv3. [A commercial license](https://embeddedartistry.com/product/embedded-virtual-machine-commercial-license), which provides holders with the ability to create and distribute software without open-source obligations, can be purchased in the [Embedded Artistry store](https://embeddedartistry.com/store).
 
@@ -25,15 +25,15 @@ Note that this project is dual-licensed. The open-source version of this project
 
 # About the Project
 
-This repository provides support for Nordic processors. Some files use the NRFX library under the hood, and others have custom register-level implementations.
+This repository contains a skeleton project with templates that are designed to be used with the Embedded VM project.
+
+You can start a new project of your own by forking this repository, clicking the "Use this template" button on the [GitHub page](https://github.com/embvm/embvm-project-skeleton), or by cloning this repository and pushing the files to your own repository as a new upstream server.
 
 **[Back to top](#table-of-contents)**
 
 # Project Status
 
-This module is a work-in-progress. Initial support for the nRF52840 processor is enabled. Only a minimal number of drivers are supported. We will be expanding driver and processor support over the coming months.
-
-Please file an issue if you need particular support, and we will get to it ASAP.
+This skeleton is kept up to date with the latest changes in the [`embvm-core`](https://github.com/embvm/embvm-core/) project. 
 
 **[Back to top](#table-of-contents)**
 
