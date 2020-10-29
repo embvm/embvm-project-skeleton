@@ -12,7 +12,7 @@ project('embvm-project-skeleton',
 		'cpp_std=c++17', 'build.cpp_std=c++17',
 	],
 	meson_version: '>=0.56.0',
-	version: '0.9'
+	version: '1.0'
 )
 
 ################################
